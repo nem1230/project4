@@ -1,0 +1,109 @@
+<div class="page-header">
+    <a href="/logout" id="logoutProf" class="btn btn-default btn-sm">Logout</a>
+    <h1><%= user.local.name %>  </h1>
+</div>
+    <div class="container">
+        <form id="songInput" class="" action="index.html" method="post">
+          <input id="songName" type="text" name="name" value="">
+          <button type="submit" name="button" class="btn btn-default btn-sm waves-orange">search</button>
+      </form>
+      <div class="" style="height: 200px; width: 660px; overflow-y:scroll">
+        <ul id="songList" class="collection">
+
+        </ul>
+      </div>
+      <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic" width="100%" height="465" scrolling="no" frameborder="no"></iframe>
+      <!-- <object height="81" width="100%" id="nickPlayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+        <param name="movie" value="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer"></param>
+        <param name="allowscriptaccess" value="always"></param>
+        <embed allowscriptaccess="always" height="81" src="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer" type="application/x-shockwave-flash" width="100%" name="yourPlayerId"></embed>
+        </object> -->
+      <div class="well">
+            <h3>Locally Stored User</h3>
+                <p>
+                    <strong>Name</strong>: <%= user.local.name %><br>
+                    <strong>id</strong>: <%= user._id %><br>
+                    <strong>email</strong>: <%= user.local.email %><br>
+                    <strong>password</strong>: <%= user.local.password %>
+                </p>
+      </div>
+
+      </div>
+  <script>
+    var songInput = $('#songInput')
+
+    songInput.on('submit', function(evt){
+      var songName = $('#songName').val()
+      var songList = $('#songList')
+      evt.preventDefault()
+      $.ajax({
+        url: '/search',
+        method: "GET",
+        contentType: "application/json",
+        data: {data: songName}
+      })
+      .done(function(tracks){
+        console.log(tracks);
+        for (var i = 0; i < tracks.length; i++) {
+          // function fixedEncodeURIComponent (str) {
+          //   return encodeURIComponent(str).replace(/[']/g, function(c) {
+          //     return '/';
+          //   });
+          // }
+          // var trackTitle = fixedEncodeURIComponent(tracks[i].title)
+          var trackTitle = tracks[i].title
+          var trackId = tracks[i].id
+          if (trackTitle.includes('Undefined') || trackTitle.includes('undefined') || trackTitle.includes('UNDEFINED')) {
+            console.log('undefined');
+          }
+          else if (tracks[i].artwork_url == null) {
+            console.log('null');
+          }
+          else {
+          songList.append('<li class="collection-item avatar">' + '<img class="circle" src=' + tracks[i].artwork_url + '>'
+          + '<span class="title">'+ trackId + '........' + trackTitle + '</span>' +
+           '<a href="#" onclick="addSong('+ trackId + ',' + trackTitle + ')" class="secondary-content"><i class="material-icons">library_add</i></a></li>')
+        }
+       }
+      })
+    })
+
+    function addSong(trackId, trackTitle) {
+      // var track = this
+      console.log(trackId, trackTitle);
+      $.ajax({
+        url: '/add/<%= currentUser._id %>',
+        method: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify({data: {trackId: trackId, trackTitle: trackTitle}})
+      }).done(function(data){
+        console.log(data);
+      })
+    }
+  </script>
+  <script type="text/javascript">
+  iframeElement = document.querySelector('iframe');
+  iframeElementID = iframeElement.id;
+  widget1  = SC.Widget(iframeElement);
+  widget2  = SC.Widget(iframeElementID);
+  (function(){
+    var widgetIframe = document.getElementById('sc-widget'),
+        widget       = SC.Widget(widgetIframe);
+
+        widget.bind(SC.Widget.Events.READY, function() {
+        widget.bind(SC.Widget.Events.PLAY, function() {
+        // get information about currently playing sound
+        widget.getCurrentSound(function(currentSound) {
+          console.log('sound ' + currentSound.get('') + 'began to play');
+          });
+        });
+      // get current level of volume
+        widget.getVolume(function(volume) {
+        console.log('current volume value is ' + volume);
+        });
+      // set new volume level
+        widget.setVolume(50);
+      // get the value of the current position
+      });
+    }());
+  </script>
