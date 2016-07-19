@@ -34,6 +34,7 @@ userRouter.get('/logout', function(req, res) {
 userRouter.post('/add/:id', function (req, res){
   console.log('userId', req.params.id);
   console.log(req.body.data);
+  // var newTrackId = 
   // var newSong = req.body.data
   res.json({message: 'success'})
 })

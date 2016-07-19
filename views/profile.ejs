@@ -12,7 +12,7 @@
 
         </ul>
       </div>
-      <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic" width="100%" height="465" scrolling="no" frameborder="no"></iframe>
+      <!-- <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic" width="100%" height="465" scrolling="no" frameborder="no"></iframe> -->
       <!-- <object height="81" width="100%" id="nickPlayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
         <param name="movie" value="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer"></param>
         <param name="allowscriptaccess" value="always"></param>
@@ -31,6 +31,7 @@
       </div>
   <script>
     var songInput = $('#songInput')
+
 
     songInput.on('submit', function(evt){
       var songName = $('#songName').val()
@@ -60,26 +61,31 @@
             console.log('null');
           }
           else {
-          songList.append('<li class="collection-item avatar">' + '<img class="circle" src=' + tracks[i].artwork_url + '>'
-          + '<span class="title">'+ trackId + '........' + trackTitle + '</span>' +
-           '<a href="#" onclick="addSong('+ trackId + ',' + trackTitle + ')" class="secondary-content"><i class="material-icons">library_add</i></a></li>')
+            var songLi = $('<li class="collection-item avatar">' + '<img class="circle" src=' + tracks[i].artwork_url + '>'
+            + '<span class="title">'+ trackTitle + '</span><span class="songId">'+ trackId + '</li>');
+            var songButton = $('<button class="secondary-content"><i class="material-icons">library_add</i></button>');
+            songLi.append(songButton)
+            songList.append(songLi)
+            var songId = $('.songId')
+            $(songId.hide())
+
+            songButton.on('click', function() {
+            var trackTitle = ($(this).siblings()[1].innerHTML);
+            var trackId = Number($(this).siblings()[2].innerHTML);
+              $.ajax({
+                url: '/add/<%= currentUser._id %>',
+                method: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({data: {trackId: trackId, trackTitle: trackTitle}})
+              }).done(function(data){
+                console.log(data);
+              })
+            })
+          }
         }
-       }
       })
     })
 
-    function addSong(trackId, trackTitle) {
-      // var track = this
-      console.log(trackId, trackTitle);
-      $.ajax({
-        url: '/add/<%= currentUser._id %>',
-        method: "POST",
-        contentType: 'application/json',
-        data: JSON.stringify({data: {trackId: trackId, trackTitle: trackTitle}})
-      }).done(function(data){
-        console.log(data);
-      })
-    }
   </script>
   <script type="text/javascript">
   iframeElement = document.querySelector('iframe');
