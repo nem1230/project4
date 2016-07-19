@@ -1,6 +1,7 @@
 var
   express = require('express'),
   passport = require('passport'),
+  User = require('../models/User.js')
   userRouter = express.Router()
 
 userRouter.route('/login')
@@ -34,9 +35,11 @@ userRouter.get('/logout', function(req, res) {
 userRouter.post('/add/:id', function (req, res){
   console.log('userId', req.params.id);
   console.log(req.body.data);
-  // var newTrackId = 
-  // var newSong = req.body.data
-  res.json({message: 'success'})
+  User.findById(req.params.id, function(err, user){
+    user.local.tracks.push({title: req.body.data.trackTitle, sc_id: req.body.data.trackId, url: req.body.data.trackUrl})
+    user.save()
+    res.json(user)
+  })
 })
 
 
