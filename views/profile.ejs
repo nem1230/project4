@@ -13,13 +13,13 @@
         </ul>
       </div>
       <div class="">
-        <ul class="collection"> <% for (var i = 0; i<currentUser.local.tracks.length; i++) { %>
+        <ul class="collection trackListData"> <% for (var i = 0; i<currentUser.local.tracks.length; i++) { %>
           <li class="collection-item songListData"><%= user.local.tracks[i].title %>
             <span class="songUrlHide"><%= user.local.tracks[i].url%></span>
             <span class="songDelId"><%= user.local.tracks[i].id%></span>
             <button type="button" class="songDel secondary-content" name="button">
               <i class="material-icons">remove_circle_outline</i></button>
-            <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
+           <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
             <i class="material-icons">play_circle_outline</i></button></li>
         <% }  %>
         </ul>
@@ -101,7 +101,32 @@
                 contentType: 'application/json',
                 data: JSON.stringify({data: {trackId: trackId, trackTitle: trackTitle, trackUrl: trackUrl}})
               }).done(function(data){
+                // window.location.reload();
                 console.log(data);
+                last =  function(array, n) {
+                  if (array == null)
+                    return void 0;
+                  if (n == null)
+                    return array[array.length - 1];
+                    return array.slice(Math.max(array.length - n, 0));
+                };
+                var last = last(data.local.tracks)
+                var sL = $('<li class="collection-item">' + '<span class="title">'+ last.title + '</span>')
+                var songId = $('<span class="songId">'+last.sc_id + '</span></li>')
+                $(songId.hide())
+                var songUrl = $('<span class="songUrl">'+ last.url +'</span>')
+                $(songUrl.hide())
+                var playButton = $('<button type="button" style="height: 27px;" class="songPlay secondary-content" name="button"><i class="material-icons">play_circle_outline</i></button>')
+                sL.append(songId)
+                sL.append(songUrl)
+                sL.append(playButton)
+                var icon = '<i class="material-icons">remove_circle_outline</i>'
+                var songDel = $('<button type="button" class="songDel secondary-content" name="button">'+ icon +' </button>')
+                sL.append(songDel)
+                playButton.on('click', playSong2)
+                songDel.on('click', songDelete)
+                $('.trackListData').append(sL)
+                // $('.trackListData').load(document.URL +   ' .trackListData');
               })
             })
           }
@@ -111,23 +136,35 @@
     var songDel = $('.songDel')
     var songDelId = $('.songDelId')
     $(songDelId.hide())
-    songDel.on('click', function(){
+    songDel.on('click', songDelete)
+
+    function songDelete (){
     var trackId = $(this).siblings()[1].innerHTML;
       $.ajax({
         url: '/track/<%= currentUser._id %>?track=' + trackId,
         method: 'GET',
       }).done(function(data){
         console.log(data);
+        $('.trackListData li:last').remove()
       })
-    })
+    }
+
     var songPlay = $('.songPlay')
     var songUrlHide = $('.songUrlHide')
     $(songUrlHide.hide())
-  songPlay.on('click', function(){
-    var songUrl = $(this).siblings()[0].innerHTML;
-    $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
-    console.log($('#sc-widget').attr('src'));
-    })
+    songPlay.on('click', playSong)
+
+    function playSong(){
+      console.log('CLICKKKED PLAYY');
+      var songUrl = $(this).siblings()[0].innerHTML;
+      $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+      console.log($('#sc-widget').attr('src'));
+    }
+    function playSong2(){
+      var songUrl = $(this).siblings()[2].innerHTML
+      $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+      console.log($('#sc-widget').attr('src'));
+    }
   </script>
   <script type="text/javascript">
   iframeElement = document.querySelector('iframe');
@@ -169,7 +206,7 @@
     </style>
         <script src="/socket.io/socket.io.js"></script>
           <script>
-            var socket = io();
+            var socket = io('/main');
 
             // function appendMessage(msg){
             //   var timestamp = moment(msg.timestamp).format('h:mm:a')

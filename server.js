@@ -33,17 +33,33 @@ var
 mongoose.connect('mongodb://localhost/playlistr', function(){
 	console.log('Connected to MongoDB playlistr')
 })
-io.on('connection', function(socket){
-  console.log('a user connected');
+var nsp = io.of('/main');
+nsp.on('connection', function(socket){
+	console.log('a user connected');
 	socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-
+	// io.on('connection', function(socket){
+	//   socket.join('some room');
+	// });
+	// io.to('some room').emit('some event'):
 	socket.on('send-chat', function(msg){
 		console.log(msg);
-    io.emit('r-chat', msg)
+    nsp.emit('r-chat', msg)
       })
 	})
+// nsp.emit('hi', 'everyone!');
+// io.on('connection', function(socket){
+//   console.log('a user connected');
+// 	socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
+//
+// 	socket.on('send-chat', function(msg){
+// 		console.log(msg);
+//     io.emit('r-chat', msg)
+//       })
+// 	})
 
 
 // application-wide middleware:
