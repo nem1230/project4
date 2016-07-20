@@ -13,8 +13,14 @@
         </ul>
       </div>
       <div class="">
-        <ul> <% for (var i = 0; i<currentUser.local.tracks.length; i++) { %>
-          <li><%= user.local.tracks[i] %></li>
+        <ul class="collection"> <% for (var i = 0; i<currentUser.local.tracks.length; i++) { %>
+          <li class="collection-item songListData"><%= user.local.tracks[i].title %>
+            <span class="songUrlHide"><%= user.local.tracks[i].url%></span>
+            <span class="songDelId"><%= user.local.tracks[i].id%></span>
+            <button type="button" class="songDel secondary-content" name="button">
+              <i class="material-icons">remove_circle_outline</i></button>
+            <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
+            <i class="material-icons">play_circle_outline</i></button></li>
         <% }  %>
         </ul>
       </div>
@@ -24,6 +30,15 @@
         <param name="allowscriptaccess" value="always"></param>
         <embed allowscriptaccess="always" height="81" src="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer" type="application/x-shockwave-flash" width="100%" name="yourPlayerId"></embed>
         </object> -->
+        <div class="oldchat-window">
+          <ul id="messages"></ul>
+            <form id="chat-form" action="" class="form-inline">
+              <input id="m" autocomplete="off" class="form-control" placeholder="Input Message" /><button id="send-button" class="btn btn-default btn-primary">Send</button>
+            </form>
+
+            </div>
+        </div>
+
       <div class="well">
             <h3>Locally Stored User</h3>
                 <p>
@@ -38,9 +53,7 @@
       </div>
   <script>
     var songInput = $('#songInput')
-
-
-    songInput.on('submit', function(evt){
+  songInput.on('submit', function(evt){
       var songName = $('#songName').val()
       var songList = $('#songList')
       evt.preventDefault()
@@ -81,7 +94,7 @@
             songButton.on('click', function() {
             var trackTitle = ($(this).siblings()[1].innerHTML);
             var trackId = Number($(this).siblings()[2].innerHTML);
-            var songUrl = ($(this).siblings()[3].innerHTML);
+            var trackUrl = ($(this).siblings()[3].innerHTML);
               $.ajax({
                 url: '/add/<%= currentUser._id %>',
                 method: "POST",
@@ -95,7 +108,26 @@
         }
       })
     })
-
+    var songDel = $('.songDel')
+    var songDelId = $('.songDelId')
+    $(songDelId.hide())
+    songDel.on('click', function(){
+    var trackId = $(this).siblings()[1].innerHTML;
+      $.ajax({
+        url: '/track/<%= currentUser._id %>?track=' + trackId,
+        method: 'GET',
+      }).done(function(data){
+        console.log(data);
+      })
+    })
+    var songPlay = $('.songPlay')
+    var songUrlHide = $('.songUrlHide')
+    $(songUrlHide.hide())
+  songPlay.on('click', function(){
+    var songUrl = $(this).siblings()[0].innerHTML;
+    $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+    console.log($('#sc-widget').attr('src'));
+    })
   </script>
   <script type="text/javascript">
   iframeElement = document.querySelector('iframe');
@@ -123,3 +155,46 @@
       });
     }());
   </script>
+  <style>
+      #messages { max-width: 500px; height: 300px; overflow-y: scroll}
+      #formnamehere { max-width: 500px;}
+      .chat-window { font: 13px Helvetica, Arial; float: right; margin: 0 auto; max-width: 380px }
+      /*#chat-form { background: #000; padding: 3px; width: 100%; }*/
+      /*#m { border: 0; padding: 10px; width: 90%; margin-right: .5%; }*/
+      #send-button { margin: 2; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+
+    </style>
+        <script src="/socket.io/socket.io.js"></script>
+          <script>
+            var socket = io();
+
+            // function appendMessage(msg){
+            //   var timestamp = moment(msg.timestamp).format('h:mm:a')
+            //   $('#messages').append('<li><small>' + timestamp + '</small> ' + msg.body + '</li>')
+            // }
+
+            $('#chat-form').submit(function(evt){
+              evt.preventDefault();
+              console.log($('#m').val());
+              socket.emit('send-chat', $('#m').val());
+              $('#m').val('');
+              return false;
+            });
+
+            socket.on('r-chat', function(msg){
+              $('#messages').append('<li>' + msg + '</li>')
+            })
+
+            // $.ajax({
+            //   url: '/messages',
+            //   method: 'GET'
+            // })
+            // .done(function(messages){
+            //   messages.forEach(function(m){
+            //     appendMessage(m)
+            //   })
+            // })
+          </script>

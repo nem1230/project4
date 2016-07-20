@@ -14,7 +14,10 @@ var
 	userRoutes = require('./routes/users.js'),
 	trackRoutes = require('./routes/tracks.js'),
 	dotenv = require('dotenv').load({silent: true}),
-	request = require('request')
+	request = require('request'),
+	http = require('http').Server(app),
+	io = require('socket.io')(http),
+	moment = require('moment')
 
 // widget1 === widget2
 	// AWS = require('aws-sdk'),
@@ -30,6 +33,18 @@ var
 mongoose.connect('mongodb://localhost/playlistr', function(){
 	console.log('Connected to MongoDB playlistr')
 })
+io.on('connection', function(socket){
+  console.log('a user connected');
+	socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+	socket.on('send-chat', function(msg){
+		console.log(msg);
+    io.emit('r-chat', msg)
+      })
+	})
+
 
 // application-wide middleware:
 app.use(logger('dev'))
@@ -74,6 +89,6 @@ app.get('/', function(req,res){
 app.use('/', userRoutes)
 app.use('/', trackRoutes)
 
-app.listen(port, function(){
+http.listen(port, function(){
 	console.log("Server running on port", port)
 })

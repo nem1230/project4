@@ -42,6 +42,20 @@ userRouter.post('/add/:id', function (req, res){
   })
 })
 
+userRouter.get('/track/:id', function (req, res){
+  // console.log(req.params.id);
+  User.findById(req.params.id, function(err, user){
+    // console.log(user.local.tracks.id(req.query.track));
+    var delTrack = user.local.tracks.indexOf(user.local.tracks.id(req.query.track))
+    user.local.tracks.splice(delTrack, 1)
+    console.log(user.local.tracks);
+      user.save(function(err, user) {
+        res.json(user)
+      })
+    })
+  })
+
+
 
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) return next()
