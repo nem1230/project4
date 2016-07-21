@@ -17,10 +17,11 @@
           <li class="collection-item songListData"><%= user.local.tracks[i].title %>
             <span class="songUrlHide"><%= user.local.tracks[i].url%></span>
             <span class="songDelId"><%= user.local.tracks[i].id%></span>
+            <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
+             <i class="material-icons">play_circle_outline</i></button>
             <button type="button" class="songDel secondary-content" name="button">
               <i class="material-icons">remove_circle_outline</i></button>
-           <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
-            <i class="material-icons">play_circle_outline</i></button></li>
+           </li>
         <% }  %>
         </ul>
       </div>
@@ -52,8 +53,8 @@
 
       </div>
   <script>
-    var songInput = $('#songInput')
-  songInput.on('submit', function(evt){
+      var songInput = $('#songInput')
+    songInput.on('submit', function(evt){
       var songName = $('#songName').val()
       var songList = $('#songList')
       evt.preventDefault()
@@ -117,11 +118,11 @@
                 var songUrl = $('<span class="songUrl">'+ last.url +'</span>')
                 $(songUrl.hide())
                 var playButton = $('<button type="button" style="height: 27px;" class="songPlay secondary-content" name="button"><i class="material-icons">play_circle_outline</i></button>')
+                var icon = '<i class="material-icons">remove_circle_outline</i>'
+                var songDel = $('<button type="button" class="songDel secondary-content" name="button">'+ icon +' </button>')
                 sL.append(songId)
                 sL.append(songUrl)
                 sL.append(playButton)
-                var icon = '<i class="material-icons">remove_circle_outline</i>'
-                var songDel = $('<button type="button" class="songDel secondary-content" name="button">'+ icon +' </button>')
                 sL.append(songDel)
                 playButton.on('click', playSong2)
                 songDel.on('click', songDelete)
@@ -206,7 +207,8 @@
     </style>
         <script src="/socket.io/socket.io.js"></script>
           <script>
-            var socket = io('/main');
+            var socket = io()
+            socket.emit('create-room', '<%= currentUser._id %>')
 
             // function appendMessage(msg){
             //   var timestamp = moment(msg.timestamp).format('h:mm:a')
@@ -224,7 +226,10 @@
             socket.on('r-chat', function(msg){
               $('#messages').append('<li>' + msg + '</li>')
             })
-
+            socket.on('join-room', function(msg) {
+              console.log(msg)
+            })
+          
             // $.ajax({
             //   url: '/messages',
             //   method: 'GET'

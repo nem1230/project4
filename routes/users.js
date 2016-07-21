@@ -32,6 +32,11 @@ userRouter.get('/logout', function(req, res) {
   res.redirect('/')
 })
 
+
+userRouter.get('/user/:id', function (req, res){
+  res.render('show.ejs', {roomToJoin: req.params.id})
+})
+
 userRouter.post('/add/:id', function (req, res){
   console.log('userId', req.params.id);
   console.log(req.body.data);
@@ -54,7 +59,6 @@ userRouter.get('/track/:id', function (req, res){
       })
     })
   })
-
 
 
 function isLoggedIn(req, res, next) {
