@@ -59,8 +59,6 @@ io.on('connection', function(socket){
 		// console.log(socket)
 		io.sockets.in(room).emit('room-joined', 'WELCOME TO THE ROOM BRO', socket.id)
 	})
-
-
 })
 
 

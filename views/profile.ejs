@@ -5,9 +5,9 @@
     <div class="container">
         <form id="songInput" class="" action="index.html" method="post">
           <input id="songName" type="text" name="name" value="">
-          <button type="submit" name="button" class="btn btn-default btn-sm waves-orange">search</button>
+          <button type="submit" name="button" class="btn btn-default waves-effect waves-light ">search</button>
       </form>
-      <div class="" style="height: 200px; width: 660px; overflow-y:scroll">
+      <div class="" style="height: 200px; max-width: 100%; overflow-y:scroll">
         <ul id="songList" class="collection">
 
         </ul>
@@ -17,9 +17,9 @@
           <li class="collection-item songListData"><%= user.local.tracks[i].title %>
             <span class="songUrlHide"><%= user.local.tracks[i].url%></span>
             <span class="songDelId"><%= user.local.tracks[i].id%></span>
-            <button type="button" style="height: 27px;" class="songPlay secondary-content" name="button">
+            <button type="button" style="height: 27px;" class="songPlay secondary-content btn btn-default waves-effect waves-light" name="button">
              <i class="material-icons">play_circle_outline</i></button>
-            <button type="button" class="songDel secondary-content" name="button">
+            <button type="button" class="songDel secondary-content btn btn-default waves-effect waves-light" name="button">
               <i class="material-icons">remove_circle_outline</i></button>
            </li>
         <% }  %>
@@ -85,7 +85,7 @@
           else {
             var songLi = $('<li class="collection-item avatar">' + '<img class="circle" src=' + tracks[i].artwork_url + '>'
             + '<span class="title">'+ trackTitle + '</span><span class="songId">'+ trackId + '</span><span class="songUrl">'+ trackUrl +'</span></li>');
-            var songButton = $('<button class="secondary-content"><i class="material-icons">library_add</i></button>');
+            var songButton = $('<button id="addButton" class="secondary-content btn btn-default waves-effect waves-light" style="width:10px;"><i class="material-icons">library_add</i></button>');
             songLi.append(songButton)
             songList.append(songLi)
             var songId = $('.songId')
@@ -117,9 +117,9 @@
                 $(songId.hide())
                 var songUrl = $('<span class="songUrl">'+ last.url +'</span>')
                 $(songUrl.hide())
-                var playButton = $('<button type="button" style="height: 27px;" class="songPlay secondary-content" name="button"><i class="material-icons">play_circle_outline</i></button>')
+                var playButton = $('<button type="button" style="height: 27px;" class="songPlay secondary-content btn btn-default waves-effect waves-light" name="button"><i class="material-icons">play_circle_outline</i></button>')
                 var icon = '<i class="material-icons">remove_circle_outline</i>'
-                var songDel = $('<button type="button" class="songDel secondary-content" name="button">'+ icon +' </button>')
+                var songDel = $('<button type="button" class="songDel secondary-content btn btn-default waves-effect waves-light" name="button">'+ icon +' </button>')
                 sL.append(songId)
                 sL.append(songUrl)
                 sL.append(playButton)
@@ -226,10 +226,12 @@
             socket.on('r-chat', function(msg){
               $('#messages').append('<li>' + msg + '</li>')
             })
-            socket.on('join-room', function(msg) {
+            socket.on('room-created', function(msg) {
               console.log(msg)
             })
-          
+            socket.emit('playsong', 'HOW ARE DEM BEEETS BRO')
+
+
             // $.ajax({
             //   url: '/messages',
             //   method: 'GET'

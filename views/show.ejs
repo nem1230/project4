@@ -5,10 +5,13 @@ width="100%" height="165px" scrolling="no" frameborder="no"></iframe>
 <script type="text/javascript">
   var socket = io();
   socket.emit('join-room', '<%= roomToJoin %>')
-  socket.on('room-created', function(message){
-    console.log(message);
+  socket.on('room-created', function(msg){
+    console.log(msg);
  })
  socket.on('room-joined', function(message){
    console.log(message);
  })
+socket.on('song-playing', function(msg){
+  console.log(msg);
+})
 </script>

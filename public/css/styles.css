@@ -1,23 +1,23 @@
-/*body {
-  background-color: #002954;
-  color: #E4FCFC;
+body {
+  background-color: #000738;
+  color: white;
 }
-nav {
-  background-color: #002954;
-  color: #E4FCFC;
-  border-bottom: 2px solid #E4FCFC;
+li {
+  color: black;
 }
-
-
-/*Buttons*/
-/*.btn {
-  color: #E4FCFC;
-  background-color: #FFA45A;
+button {
+  background-color: #FFBC68;
+}
+.btn {
+    background-color: #FFBC68;
+}
+.btn:hover{
+    background-color: #FFBC68;
 }
 .btn:active{
-    color: #E4FCFC;
-    background-color: #FFA45A;
-}*/
+    background-color: #FFBC68;
+}
+
 
 #logoutProf {
   float: right;
