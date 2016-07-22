@@ -1,12 +1,17 @@
 body {
   background-color: #000738;
   color: white;
+  background-image: url('/images/radio.jpg');
+  max-width: 100%
 }
 li {
   color: black;
 }
 button {
   background-color: #FFBC68;
+}
+.btn-large{
+      background-color: #FFBC68;
 }
 .btn {
     background-color: #FFBC68;
@@ -17,6 +22,83 @@ button {
 .btn:active{
     background-color: #FFBC68;
 }
+.btn:focus{
+    background-color: #FFBC68;
+}
+
+.homeBody{
+
+}
+nav {
+   background-color: transparent;
+   background: transparent;
+   border-color: transparent;
+}
+button {
+  background-color: #FFBC68;
+}
+.navButton{
+  background-color: transparent;
+  background: transparent;
+  border: solid 1px white;
+}
+.navButton:hover{
+  background-color: transparent;
+  background: transparent;
+}
+.navButton:active{
+  background-color: transparent;
+  background: transparent;
+}
+.navButton:focus{
+  background-color: transparent;
+  background: transparent;
+}
+
+.navbar li { color: #000 }
+
+.signUpContainer{
+  background:rgba(0,0,0,0.7);
+  max-width: 40%;
+  margin: 0 auto;
+}
+.logoTitle {
+  font-family: lobster;
+}
+
+.brand-logo{
+  margin-left: 10px;
+  font-size: 40px;
+}
+
+label {
+  color: white;
+  font-size: 14px;
+}
+.form-control{
+  color: white;
+}
+input:not([type]), input[type=text],
+ input[type=password], input[type=email],
+ input[type=url], input[type=time], input[type=date],
+ input[type=datetime], input[type=datetime-local], input[type=tel],
+ input[type=number], input[type=search], textarea.materialize-textarea {
+   border-bottom: 1px solid white;
+   border-bottom-width: 1px;
+   border-bottom-style: solid;
+   border-bottom-color: rgb(255, 255, 255);
+}
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=text]:focus:not([readonly]),
+ input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]),
+ input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]),
+ input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]),
+ input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]){
+   border-bottom: 1px solid white;
+   border-bottom-width: 1px;
+   border-bottom-style: solid;
+   border-bottom-color: rgb(255, 255, 255);
+ }
+
 
 
 #logoutProf {

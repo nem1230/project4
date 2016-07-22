@@ -1,11 +1,14 @@
 <div class="page-header">
-    <a href="/logout" id="logoutProf" class="btn btn-default btn-sm">Logout</a>
-    <h1><%= user.local.name %>  </h1>
+    <h1><%= user.local.userName %>  </h1>
 </div>
-    <div class="container">
+    <div class="container row signUpContainer" style="max-width: 100%; margin: 0 auto;">
+
+      <div class="col s8 ">
+
+
         <form id="songInput" class="" action="index.html" method="post">
           <input id="songName" type="text" name="name" value="">
-          <button type="submit" name="button" class="btn btn-default waves-effect waves-light ">search</button>
+          <button type="submit" name="button" class="navButton waves-effect waves-light btn btn-warning btn-lg ">search</button>
       </form>
       <div class="" style="height: 200px; max-width: 100%; overflow-y:scroll">
         <ul id="songList" class="collection">
@@ -17,44 +20,42 @@
           <li class="collection-item songListData"><%= user.local.tracks[i].title %>
             <span class="songUrlHide"><%= user.local.tracks[i].url%></span>
             <span class="songDelId"><%= user.local.tracks[i].id%></span>
-            <button type="button" style="height: 27px;" class="songPlay secondary-content btn btn-default waves-effect waves-light" name="button">
+            <button type="button" style="height: 27px;" data-play:"play" class="songPlay  waves-effect waves-light btn btn-warning btn-lg" name="button">
              <i class="material-icons">play_circle_outline</i></button>
-            <button type="button" class="songDel secondary-content btn btn-default waves-effect waves-light" name="button">
+            <button type="button" class="songDel waves-effect waves-light btn btn-warning btn-lg" name="button">
               <i class="material-icons">remove_circle_outline</i></button>
            </li>
         <% }  %>
         </ul>
       </div>
-      <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic" width="100%" height="165px" scrolling="no" frameborder="no"></iframe>
+      <iframe id="sc-widget" src="" width="100%" height="165px" scrolling="no" frameborder="no"></iframe>
       <!-- <object height="81" width="100%" id="nickPlayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
         <param name="movie" value="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer"></param>
         <param name="allowscriptaccess" value="always"></param>
         <embed allowscriptaccess="always" height="81" src="http://player.soundcloud.com/player.swf?url=http%3A%2F%2Fsoundcloud.com%2Fmatas%2Fhobnotropic&enable_api=true&object_id=nickPlayer" type="application/x-shockwave-flash" width="100%" name="yourPlayerId"></embed>
         </object> -->
-        <div class="oldchat-window">
-          <ul id="messages"></ul>
-            <form id="chat-form" action="" class="form-inline">
-              <input id="m" autocomplete="off" class="form-control" placeholder="Input Message" /><button id="send-button" class="btn btn-default btn-primary">Send</button>
-            </form>
-
-            </div>
         </div>
+        <div class="col s4 ">
 
-      <div class="well">
-            <h3>Locally Stored User</h3>
-                <p>
-                    <strong>Name</strong>: <%= user.local.name %><br>
-                    <strong>id</strong>: <%= user._id %><br>
-                    <strong>email</strong>: <%= user.local.email %><br>
-                    <strong>password</strong>: <%= user.local.password %><br>
-                    <strong>tracks</strong>: <%= user.local.tracks %>
-                </p>
-      </div>
+
+        <div class="oldchat-window" style="max-width:100%; margin-left: 50px;">
+          <ul id="messages" style="background: white;"></ul>
+            <form id="chat-form" action="" class="form-inline">
+              <input id="m" autocomplete="off" class="form-control" placeholder="Input Message" /><button id="send-button" class="navButton waves-effect waves-light btn btn-warning btn-lg">Send</button>
+            </form>
+    </div>
+            </div>
+          </div>
+        </div>
 
       </div>
   <script>
       var songInput = $('#songInput')
+      function refreshList(){
+        songList = $('<li></li>')
+      }
     songInput.on('submit', function(evt){
+      $('#songList').empty()
       var songName = $('#songName').val()
       var songList = $('#songList')
       evt.preventDefault()
@@ -84,8 +85,8 @@
           }
           else {
             var songLi = $('<li class="collection-item avatar">' + '<img class="circle" src=' + tracks[i].artwork_url + '>'
-            + '<span class="title">'+ trackTitle + '</span><span class="songId">'+ trackId + '</span><span class="songUrl">'+ trackUrl +'</span></li>');
-            var songButton = $('<button id="addButton" class="secondary-content btn btn-default waves-effect waves-light" style="width:10px;"><i class="material-icons">library_add</i></button>');
+            + '<span class="songUrl">'+ trackUrl +'</span><span class="songId">'+ trackId + '</span><span class="title">'+ trackTitle + '</span></li>');
+            var songButton = $('<button id="addButton" class="waves-effect waves-light btn btn-warning btn-lg" style="width:10px;"><i class="material-icons">library_add</i></button>');
             songLi.append(songButton)
             songList.append(songLi)
             var songId = $('.songId')
@@ -93,9 +94,9 @@
             $(songId.hide())
             $(songUrl.hide())
             songButton.on('click', function() {
-            var trackTitle = ($(this).siblings()[1].innerHTML);
+            var trackTitle = ($(this).siblings()[3].innerHTML);
             var trackId = Number($(this).siblings()[2].innerHTML);
-            var trackUrl = ($(this).siblings()[3].innerHTML);
+            var trackUrl = ($(this).siblings()[1].innerHTML);
               $.ajax({
                 url: '/add/<%= currentUser._id %>',
                 method: "POST",
@@ -117,23 +118,33 @@
                 $(songId.hide())
                 var songUrl = $('<span class="songUrl">'+ last.url +'</span>')
                 $(songUrl.hide())
-                var playButton = $('<button type="button" style="height: 27px;" class="songPlay secondary-content btn btn-default waves-effect waves-light" name="button"><i class="material-icons">play_circle_outline</i></button>')
+                var playButton = $('<button type="button" style="height: 27px;" class="songPlay2  waves-effect waves-light btn btn-warning btn-lg" name="button"><i class="material-icons">play_circle_outline</i></button>')
                 var icon = '<i class="material-icons">remove_circle_outline</i>'
-                var songDel = $('<button type="button" class="songDel secondary-content btn btn-default waves-effect waves-light" name="button">'+ icon +' </button>')
+                var songDel = $('<button type="button" class="songDel  waves-effect waves-light btn btn-warning btn-lg" name="button">'+ icon +' </button>')
                 sL.append(songId)
                 sL.append(songUrl)
                 sL.append(playButton)
                 sL.append(songDel)
-                playButton.on('click', playSong2)
+                // playButton.on('click', playSong2)
                 songDel.on('click', songDelete)
                 $('.trackListData').append(sL)
                 // $('.trackListData').load(document.URL +   ' .trackListData');
+                var songPlay2 = $('.songPlay2')
+                songPlay2.on('click', playSong2)
+                function playSong2(){
+                  var songUrl = $(this).siblings()[2].innerHTML
+                  $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+                  console.log($('#sc-widget').attr('src'));
+                }
+                })
               })
-            })
-          }
-        }
+              }
+            }
+          })
       })
-    })
+
+
+
     var songDel = $('.songDel')
     var songDelId = $('.songDelId')
     $(songDelId.hide())
@@ -152,20 +163,19 @@
 
     var songPlay = $('.songPlay')
     var songUrlHide = $('.songUrlHide')
+
     $(songUrlHide.hide())
     songPlay.on('click', playSong)
 
     function playSong(){
       console.log('CLICKKKED PLAYY');
       var songUrl = $(this).siblings()[0].innerHTML;
-      $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+      $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?autoplay=true&url=" + songUrl + '&auto_play=true')
       console.log($('#sc-widget').attr('src'));
+      socket.emit('playsong', songUrl, '<%= currentUser._id %>')
     }
-    function playSong2(){
-      var songUrl = $(this).siblings()[2].innerHTML
-      $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
-      console.log($('#sc-widget').attr('src'));
-    }
+
+
   </script>
   <script type="text/javascript">
   iframeElement = document.querySelector('iframe');
@@ -208,8 +218,8 @@
         <script src="/socket.io/socket.io.js"></script>
           <script>
             var socket = io()
+            console.log('<%= currentUser._id %>');
             socket.emit('create-room', '<%= currentUser._id %>')
-
             // function appendMessage(msg){
             //   var timestamp = moment(msg.timestamp).format('h:mm:a')
             //   $('#messages').append('<li><small>' + timestamp + '</small> ' + msg.body + '</li>')
@@ -229,7 +239,8 @@
             socket.on('room-created', function(msg) {
               console.log(msg)
             })
-            socket.emit('playsong', 'HOW ARE DEM BEEETS BRO')
+
+            socket.emit('playsong', "CHECKOUT MY BEEETS", '<%= currentUser._id %>')
 
 
             // $.ajax({

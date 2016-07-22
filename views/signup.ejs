@@ -1,12 +1,18 @@
 <div class="col-sm-6 col-sm-offset-3">
+  <div class="signUpContainer">
 
-    <h1>Signup</h1>
+
+    <h1 class="logoTitle">Sign Up</h1>
 
     <% if(flash.length > 0) { %>
       <div class="alert alert-danger"><%= flash %></div>
     <% } %>
 
     <form action="/signup" method="post">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" name="userName">
+        </div>
         <div class="form-group">
             <label>Name</label>
             <input type="text" class="form-control" name="name">
@@ -20,12 +26,11 @@
             <input type="password" class="form-control" name="password">
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+        <button type="submit" class="navButton waves-effect waves-light btn btn-warning btn-lg">Signup</button>
     </form>
 
     <hr>
 
-    <p>Or, <a href="/login">Login</a></p>
-    <p>Go back <a href="/">home</a>.</p>
 
+  </div>
 </div>

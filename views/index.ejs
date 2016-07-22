@@ -1,8 +1,25 @@
-<div class="">
+<div class="homeBody">
     <h1><span class="fa fa-lock"></span></h1>
-    <h3>Login or Sign Up:</h3>
-    <a href="/login" class="waves-effect waves-light btn">Login</a>
-    <a href="/signup" class="waves-effect waves-light btn">Signup</a>
-    <a href="/user/<%= %>"></a>
-    <hr>
+    <!-- <a href="/user/<%= %>"></a> -->
+    <ul class="room-library">
+      <li></li>
+    </ul>
 </div>
+  <script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var socket = io();
+
+  socket.on('room-homepage', function(room){
+    console.log(room);
+    $.ajax({
+      url: 'user/logged/' + room,
+      method: 'GET'
+    }).done(function(data){
+      console.log(data);
+      console.log(data.local.userName)
+      var roomLibrary = $('.room-library')
+      roomLibrary.append('<a href="/user/' + data._id + '" data-username="' + data.local.userName + '">' + data.local.userName + '</a>')
+    })
+
+  })
+</script>

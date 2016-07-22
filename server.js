@@ -51,13 +51,21 @@ io.on('connection', function(socket){
 	socket.on('create-room', function(room) {
 		console.log("Socket trying to join room: ", room)
 		socket.join(room)
-		io.sockets.in(room).emit('room-created', 'What uuup, in the building!', socket.id)
+		console.log(socket);
+		io.emit('room-homepage', room)
+		io.sockets.in(room).emit('room-created', 'What uuup, in the building!', room, socket.id)
 	})
 
 	socket.on('join-room', function(room) {
 		socket.join(room)
 		// console.log(socket)
 		io.sockets.in(room).emit('room-joined', 'WELCOME TO THE ROOM BRO', socket.id)
+
+	})
+	socket.on('playsong', function(msg, room){
+		console.log(room);
+		console.log(msg);
+		io.sockets.in(room).emit('song-playing', msg, socket.id)
 	})
 })
 
@@ -77,7 +85,7 @@ app.use(ejsLayouts)
 
 // session + passport
 app.use(session({
-	cookie: {maxAge: 60000000},
+	cookie: {maxTime: 60000000},
 	secret: "boomchakalaka",
 	resave: true,
 	saveUninitialized: false
@@ -89,7 +97,7 @@ app.use(flash())
 
 app.use(function(req, res, next) {
 	app.locals.currentUser = req.user || null
-	app.locals.loggedIn = !!req.user
+	app.locals.isLoggedIn = !!req.user
 	next()
 })
 

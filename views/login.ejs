@@ -1,5 +1,6 @@
 <div class="col-sm-6 col-sm-offset-3">
-    <h1>Login</h1>
+  <div class="signUpContainer">
+    <h1 class="logoTitle">Login</h1>
 
     <% if(flash.length > 0) { %>
       <div class="alert alert-danger"><%= flash %></div>
@@ -15,12 +16,10 @@
             <input type="password" class="form-control" name="password">
         </div>
 
-        <button type="submit" class="btn btn-info btn-lg">Login</button>
+        <button type="submit" class="navButton waves-effect waves-light btn btn-warning btn-lg">Login</button>
     </form>
 
     <hr>
 
-    <p>Or, <a href="/signup">Signup</a></p>
-    <p>Go back <a href="/">home</a>.</p>
-
+  </div>
 </div>

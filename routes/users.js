@@ -37,6 +37,12 @@ userRouter.get('/user/:id', function (req, res){
   res.render('show.ejs', {roomToJoin: req.params.id})
 })
 
+userRouter.get('/user/logged/:id', function (req, res){
+  User.findById(req.params.id, function(err, user){
+    res.json(user)
+  })
+})
+
 userRouter.post('/add/:id', function (req, res){
   console.log('userId', req.params.id);
   console.log(req.body.data);

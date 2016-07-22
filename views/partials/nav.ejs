@@ -1,10 +1,16 @@
 <nav>
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo left" style="padding-right: 30px;">Logo</a>
-      <input type="text" class="right" style='width: 100px; height:35px; margin-top: 20px; margin-right:10px;' name="name" value="">
+      <a href="/" class="brand-logo logoTitle left" style="padding-right: 30px;">Tune In</a>
+      <% if (isLoggedIn) { %>
+      <a href="/logout" class="navButton waves-effect waves-light btn right" style="margin-right:10px">Logout</a>
+      <% } else { %>
+      <a href="/login" class="navButton waves-effect waves-light btn right" style="margin-right:10px">Login</a><a href="/signup" class="navButton waves-effect waves-light btn right" style="margin-right:10px">Signup</a>
+      <% } %>
+
+      <!-- <input type="text" class="right" style='width: 100px; height:35px; margin-top: 20px; margin-right:10px;' name="name" value="">
       <p class="right" style="margin-right:10px; font-size:20px; margin-top:6px">
         Search:
-      </p>
+      </p> -->
 
     </div>
   </nav>
