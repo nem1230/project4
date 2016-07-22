@@ -1,9 +1,16 @@
 <div class="homeBody">
     <h1><span class="fa fa-lock"></span></h1>
     <!-- <a href="/user/<%= %>"></a> -->
-    <ul class="room-library">
-      <li></li>
-    </ul>
+
+    <div class="signUpContainer" style="max-width: 100%;">
+      <% if (isLoggedIn) { %>
+      <ul class="room-library collection"></ul>
+      <% } else { %>
+  <h1>SIGNUP OR SIGN IN TO ACCESS RADIO STATIONS</h1>
+    <% } %>
+
+
+    </div>
 </div>
   <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
@@ -18,7 +25,7 @@ var socket = io();
       console.log(data);
       console.log(data.local.userName)
       var roomLibrary = $('.room-library')
-      roomLibrary.append('<a href="/user/' + data._id + '" data-username="' + data.local.userName + '">' + data.local.userName + '</a>')
+      roomLibrary.append('<li class="collection-item"><a href="/user/' + data._id + '" data-username="' + data.local.userName + '">' + data.local.userName + '</a></li>')
     })
 
   })
