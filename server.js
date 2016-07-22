@@ -29,13 +29,13 @@ var
 
 
 
-mongoose.connect(process.env.MONGO_URL, function(err){
-	if (err) return console.log(err)
-	console.log('Connected to MongoDB online radio')
-})
-// mongoose.connect('mongodb://localhost/radio', function(){
-// 	console.log('Connected to MongoDB RADIO')
+// mongoose.connect(process.env.MONGO_URL, function(err){
+// 	if (err) return console.log(err)
+// 	console.log('Connected to MongoDB online radio')
 // })
+mongoose.connect('mongodb://localhost/radio', function(){
+	console.log('Connected to MongoDB RADIO')
+})
 // var nsp = io.of('/main');
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -100,7 +100,8 @@ app.use(flash())
 
 app.use(function(req, res, next) {
 	app.locals.currentUser = req.user || null
-	app.locals.isLoggedIn = !!req.user
+	app.locals.isLoggedIn = false
+	// !!req.user
 	next()
 })
 
