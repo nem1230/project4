@@ -29,10 +29,13 @@ var
 
 
 
-
-mongoose.connect('mongodb://localhost/playlistr', function(){
-	console.log('Connected to MongoDB playlistr')
+mongoose.connect(process.env.MONGO_URL, function(err){
+	if (err) return console.log(err)
+	console.log('Connected to MongoDB online radio')
 })
+// mongoose.connect('mongodb://localhost/radio', function(){
+// 	console.log('Connected to MongoDB RADIO')
+// })
 // var nsp = io.of('/main');
 io.on('connection', function(socket){
 	console.log('a user connected');
