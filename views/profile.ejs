@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1><%= user.local.userName %>  </h1>
+    <h1><%= user.local.username %>  </h1>
 </div>
     <div class="container row signUpContainer" style="max-width: 100%; margin: 0 auto;">
 
@@ -77,10 +77,7 @@
           var trackTitle = tracks[i].title
           var trackId = tracks[i].id
           var trackUrl = tracks[i].permalink_url
-          if (trackTitle.includes('Undefined') || trackTitle.includes('undefined') || trackTitle.includes('UNDEFINED')) {
-            console.log('undefined');
-          }
-          else if (tracks[i].artwork_url == null) {
+          if (tracks[i].artwork_url == null) {
             console.log('null');
           }
           else {
@@ -133,7 +130,8 @@
                 songPlay2.on('click', playSong2)
                 function playSong2(){
                   var songUrl = $(this).siblings()[2].innerHTML
-                  $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+                  $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl + '&auto_play=true')
+                  socket.emit('playsong', songUrl, '<%= currentUser._id %>')
                   console.log($('#sc-widget').attr('src'));
                 }
                 })

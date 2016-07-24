@@ -10,7 +10,7 @@ var
   })
   userSchema = new Schema({
     local: {
-      userName: String,
+      username: String,
       name: String,
       email: String,
       password: String,

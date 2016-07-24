@@ -14,7 +14,7 @@ width="100%" height="165px" scrolling="no" frameborder="no"></iframe>
  })
 socket.on('song-playing', function(songUrl){
   // console.log(msg);
-  $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl)
+  $('#sc-widget').attr('src', "https://w.soundcloud.com/player/?url=" + songUrl + '&auto_play=true')
 })
 
 </script>

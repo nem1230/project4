@@ -56,7 +56,7 @@ io.on('connection', function(socket){
 		socket.join(room)
 		console.log(socket);
 		io.emit('room-homepage', room)
-		io.sockets.in(room).emit('room-created', 'What uuup, in the building!', room, socket.id)
+		io.sockets.in(room).emit('room-created', 'What uuup, in the building!', socket.id)
 	})
 
 	socket.on('join-room', function(room) {
@@ -100,7 +100,7 @@ app.use(flash())
 
 app.use(function(req, res, next) {
 	app.locals.currentUser = req.user || null
-	app.locals.isLoggedIn = false
+	app.locals.isLoggedIn = !!req.user
 	// !!req.user
 	next()
 })

@@ -12,8 +12,9 @@ trackRouter.get('/search', function(req, res){
   request(apiUrl, function(err, response){
     if (err) return console.log(err)
     // console.log(Object.keys(response.body));
+
     var tracks = JSON.parse(response.body)
-    // console.log(tracks);
+    console.log(tracks);
     res.json(tracks)
   })
 })
