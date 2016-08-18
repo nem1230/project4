@@ -19,11 +19,10 @@ var socket = io();
       url: 'user/logged/' + room,
       method: 'GET'
     }).done(function(data){
-      console.log(data);
-      console.log(data.local.username)
+      console.log(data)
       var roomLibrary = $('.room-library')
       console.log(data.local.username);
-      roomLibrary.append('<li class="collection-item"><a href="/user/' + data._id + '" data-username="' + data.local.username + '">' + data.local.username + '</a></li>')
+      roomLibrary.append('<li  style="color: black" class="collection-item"><a  href="/user/' + data._id + '" data-username="' + data.local.username + '">' + data.local.username + /'/g + 's station' '</a></li>')
     })
 
   })
