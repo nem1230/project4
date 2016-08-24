@@ -71,6 +71,11 @@ io.on('connection', function(socket){
 		io.sockets.in(room).emit('song-playing', msg, socket.id)
 	})
 })
+// socket.on('station-name', function(msg, room){
+// 	console.log(room);
+// 	console.log(msg);
+// 	io.sockets.in(room).emit('song-playing', msg, socket.id)
+// })
 
 
 // application-wide middleware:

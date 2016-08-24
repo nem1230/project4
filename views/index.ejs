@@ -22,8 +22,9 @@ var socket = io();
       console.log(data)
       var roomLibrary = $('.room-library')
       console.log(data.local.username);
-      roomLibrary.append('<li  style="color: black" class="collection-item"><a  href="/user/' + data._id + '" data-username="' + data.local.username + '">' + data.local.username + "'s station" + '</a></li>')
+      roomLibrary.append('<li   class="collection-item"><a style="color: black; font-size: 20px" href="/user/' + data._id + '" data-username="' + data.local.username + '">' + data.local.username + "'s station" + '</a></li>')
     })
-
   })
+  
+
 </script>
