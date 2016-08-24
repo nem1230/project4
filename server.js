@@ -19,23 +19,14 @@ var
 	io = require('socket.io')(http),
 	moment = require('moment')
 
-// widget1 === widget2
-	// AWS = require('aws-sdk'),
-	// awsKey = process.env.AWS_ACCESS_KEY_ID,
-	// awsSkey = process.env.AWS_SECRET_ACCESS_KEY,
-	// awsBucket = process.env.AWS_BUCKET,
-	// awsRegion = process.env.AWS_REGION,
-	// multer = require('multer')
-
-
-
-mongoose.connect(process.env.MONGO_URL, function(err){
-	if (err) return console.log(err)
-	console.log('Connected to MongoDB online radio')
-})
-// mongoose.connect('mongodb://localhost/online-radio-app', function(){
-// 	console.log('Connected to MongoDB RADIO')
+//
+// mongoose.connect(process.env.MONGO_URL, function(err){
+// 	if (err) return console.log(err)
+// 	console.log('Connected to MongoDB online radio')
 // })
+mongoose.connect('mongodb://localhost/online-radio-app', function(){
+	console.log('Connected to MongoDB RADIO')
+})
 // var nsp = io.of('/main');
 io.on('connection', function(socket){
 	console.log('a user connected');
